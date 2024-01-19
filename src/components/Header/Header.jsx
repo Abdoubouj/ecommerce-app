@@ -1,18 +1,23 @@
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.svg";
-import { BsBag , BsHeart, BsSearch } from "react-icons/bs";
-import { useEffect } from "react";
-import {useSelector , useDispatch} from "react-redux";
-import { categories, categories_error, categories_status, fetchCategories } from "../../features/categorySlice";
+import { BsBag, BsHeart, BsSearch } from "react-icons/bs";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  categories,
+  categories_error,
+  categories_status,
+  fetchCategories,
+} from "../../features/categorySlice";
 const Header = () => {
   const dispatch = useDispatch();
   const categories_list = useSelector(categories);
   const status = useSelector(categories_status);
   const error = useSelector(categories_error);
-  useEffect(()=>{
-     dispatch(fetchCategories())
-  },[dispatch]);
-  console.log(categories_list);
+  const [inputValue, setInputValue] = useState("");
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
   return (
     <header className="app-header border-b-2 border-light">
       <div className="header-top px-5 flex items-center justify-between">
@@ -23,9 +28,14 @@ const Header = () => {
           <input
             type="text"
             placeholder="search product..."
+            onChange={(e) => {
+              setInputValue(e.target.value);
+            }}
             className="border-[1px] border-light p-2 px-8 rounded-xl w-[430px] bg-slate-50 text-dark placeholder:text-black focus:outline-none"
           />
-          <BsSearch className="absolute top-[15px] left-[8px] text-black" />
+          <Link  to={`${inputValue !== "" ? `/products/search/${inputValue}` :`/`}`}>
+            <BsSearch className="absolute top-[15px] left-[8px] text-black" />
+          </Link>
         </div>
         <div className="h-right flex items-center gap-8 text-black">
           <div className="cart flex flex-col justify-center items-center relative">
@@ -50,15 +60,20 @@ const Header = () => {
       </div>
       <div className="header-bottom px-8 py-2">
         <div className="categories">
-          {error !== null && (<h1>{error}</h1>)}
-          {status === "loading" ? (<h1>loading ...</h1>) : (
+          {error !== null && <h1>{error}</h1>}
+          {status === "loading" ? (
+            <h1>loading ...</h1>
+          ) : (
             <div className="categories_list font-[600] text-black flex gap-7">
-              { categories_list.slice(0,8).map((category,index)=>(   
-                  <Link to="#" key={index} className="hover:text-yellow">
-                   {category}
-                  </Link>
-                ))
-              }
+              {categories_list.slice(0, 8).map((category, index) => (
+                <Link
+                  to={`/category/${category}`}
+                  key={index}
+                  className="hover:text-yellow"
+                >
+                  {category}
+                </Link>
+              ))}
             </div>
           )}
         </div>

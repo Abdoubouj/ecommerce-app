@@ -8,7 +8,6 @@ export const fetchCategories = createAsyncThunk(
     return data;
   }
 );
-
 const initialState = {
   categories: [],
   status: "idle",
@@ -33,7 +32,6 @@ const categorySlice = createSlice({
       });
   },
 });
-
 export const categories = (state) => state.category.categories;
 export const categories_status = (state) => state.category.status;
 export const categories_error = (state) => state.category.error;
