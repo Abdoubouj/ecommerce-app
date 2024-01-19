@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.svg";
+import user from "../../assets/user.jpg";
 import { BsBag, BsHeart, BsSearch } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -51,7 +52,7 @@ const Header = () => {
           </div>
           <div className="user-account">
             <img
-              src="user.jpg"
+              src={user}
               alt="#"
               className="w-[40px] h-[40px] rounded-full object-cover"
             />
@@ -64,7 +65,7 @@ const Header = () => {
           {status === "loading" ? (
             <h1>loading ...</h1>
           ) : (
-            <div className="categories_list font-[600] text-black flex gap-7">
+            <div className="categories_list font-[600] text-black flex justify-center gap-7">
               {categories_list.slice(0, 8).map((category, index) => (
                 <Link
                   to={`/category/${category}`}

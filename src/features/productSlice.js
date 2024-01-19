@@ -6,6 +6,12 @@ export const fetchProducts = createAsyncThunk("product/fetchProducts",async()=>{
     return data.products;
 })
 
+export const fetchSingleProduct = createAsyncThunk("product/fetchSingleProduct",async (id)=>{
+  const response = await axios.get(`https://dummyjson.com/products/${id}`);
+  const data = response.data;
+  return data;
+})
+
 export const fetchSearchedProducts = createAsyncThunk("product/fetchSearchedProducts",async(query)=>{
     const response = await axios.get(`https://dummyjson.com/products/search`,{
       params:{
@@ -23,12 +29,19 @@ export const fetchProductsCategory = createAsyncThunk("product/fetchProductsCate
   return data.products;
 });
 const initialState = {
+  // all products //
     products :[],
     status:"idle",
     error:null,
+  // single Product //
+   singleProduct:{},
+   singleProductStatus:"idle",
+   singleProductError:null,
+  //products by category // 
     productsCategory:[],
     productsCategoryStatus:"idle",
     productsCategoryError:null,
+  // searched Products // 
     searchedProducts:[],
     searechedProductsStatus:"idle",
     searchedProductsError:null
@@ -49,6 +62,17 @@ const productSlice = createSlice({
        .addCase(fetchProducts.rejected , (state,action)=>{
          state.status = "failed";
          state.error = action.error.message;
+       })
+       .addCase(fetchSingleProduct.pending , (state)=>{
+         state.singleProductStatus = "loading";
+       })
+       .addCase(fetchSingleProduct.fulfilled , (state,action)=>{
+         state.singleProductStatus = "succeded";
+         state.singleProduct = action.payload;
+       })
+       .addCase(fetchSingleProduct.rejected , (state,action)=>{
+         state.singleProductStatus = "failed";
+         state.singleProduct = action.error.message;
        })
        .addCase(fetchProductsCategory.pending , (state)=>{
          state.productsCategoryStatus = "loading";
@@ -78,6 +102,10 @@ const productSlice = createSlice({
 export const products = state=>state.product.products
 export const status = state=>state.product.status;
 export const error = state=>state.product.error;
+
+export const singleProduct = state=>state.product.singleProduct
+export const singleProductStatus = state=>state.product.singleProductStatus;
+export const singleProductError = state=>state.product.singleProductError;
 
 
 export const productsCategory = state=>state.product.productsCategory

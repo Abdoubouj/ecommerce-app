@@ -19,8 +19,8 @@ const Products = () => {
           <h1 className='ps-3 my-3 font-bold text-[30px]'>All Products</h1>
           <div className="flex flex-wrap justify-start items-center gap-5">
             {productsList.map((product)=>(
-               <Suspense fallback={<div>Loading...</div>}>
-              <Product key={product.id} product={product}/>
+               <Suspense key={product?.id} fallback={<div>Loading...</div>}>
+                 <Product product={product}/>
                </Suspense>
               ))}
               </div>

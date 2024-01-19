@@ -14,8 +14,8 @@ const ProductsCategory = () => {
     },[category])
   return (
     <div className="products_list mt-5 max-w-[1300px] mx-auto p-5">
-     <div className="head flex items-center gap-5 ps-3 my-3 font-[500]">
-        <Link to="/" className="text-[18px] hover:text-yellow">Home</Link>
+     <div className="head flex items-center gap-10 ps-3 my-3 font-[500]">
+        <Link to="/" className="text-[18px] hover:text-yellow relative before:content-[''] before:absolute before:w-[6px] before:h-[6px] before:rounded-full before:bg-slate-600 before:top-[12px] before:-right-[22px] before:z-10">Home</Link>
         <h1 className="text-[18px] text-yellow">
           Products {category}
         </h1>
