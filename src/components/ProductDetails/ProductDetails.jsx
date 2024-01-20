@@ -5,8 +5,10 @@ import {useDispatch , useSelector} from "react-redux"
 import { fetchProductsCategory, fetchSingleProduct, productsCategory, singleProduct, singleProductStatus } from '../../features/productSlice';
 import { convertRatingToStars, generateNumberArray } from '../../helpers/helper';
 import { FaRegHeart, FaStar, FaStarHalf } from 'react-icons/fa';
+import {FaRegCircleCheck ,FaArrowLeftLong} from 'react-icons/fa6';
 import {IoBagOutline} from 'react-icons/io5';
 import {CiDeliveryTruck} from 'react-icons/ci';
+import { addToCart } from '../../features/cartSlice';
 import SimilarProducts from '../SimilarProducts/SimilarProducts';
 const ProductDetails = () => {
   const {id} = useParams();
@@ -15,14 +17,28 @@ const ProductDetails = () => {
   const status = useSelector(singleProductStatus);
   const sizes = generateNumberArray(39,45);
   const [size , setSize] = useState("");
+  const [productAddedToCart , setProductAddedToCart] = useState(false);
   const similarProducts = useSelector(productsCategory);
   useEffect(()=>{
+    window.scrollTo(0, 0);
     dispatch(fetchSingleProduct(id));
     dispatch(fetchProductsCategory(product?.category))
   },[dispatch,id , product?.category]);
   return (
-    <div className="product-details-container p-5">
-      {status === "loading"? (<h1>Loading ...</h1>):
+    <div className="product-details-container truncate relative p-5">
+      <div className={`box transition duration-500 flex flex-col gap-5 items-center justify-start bg-white absolute top-[5px] ${productAddedToCart ? 'right-[50px] translate-x-0' : 'translate-x-[550px] -right-[550px]'}  z-20 p-4 border-2 border-green-600 rounded-lg shadow-md`}>
+        <p className='mt-3 text-[22px] capitalize font-[700]'>product added to cart</p>
+        <FaRegCircleCheck  className='text-green-700 text-[80px]'/>
+        <div className="flex gap-3">
+        <Link to="/cart" className='text-white flex gap-2 items-center px-5 py-3 bg-black rounded-md font-[600]'>
+        <IoBagOutline/> Proceed to Cart
+         </Link>
+        <Link to="/" className='text-white flex gap-2 items-center px-5 py-3 bg-yellow rounded-md font-[600]'>
+        <FaArrowLeftLong/> Continue Shop
+         </Link>
+        </div>
+      </div>
+      {status === "loading"? (<h1 className='min-h-screen'>Loading ...</h1>):
       (
         <>
         <div className="head flex items-center gap-10 my-3 font-[500]">
@@ -36,7 +52,7 @@ const ProductDetails = () => {
           <div className="main-image w-full">
             <img src={product?.thumbnail} alt="##" className='w-full h-[500px] object-cover shadow-xl rounded-md' />
           </div>
-          <div className="other-images flex justify-start gap-5 pt-3">
+          <div className="other-images flex flex-wrap justify-start gap-5 pt-3">
             {product?.images?.map((img ,index)=>(
               <img key={index} src={img} className='cursor-pointer w-[120px] h-[120px] object-cover rounded-md shadow-xl shadow-slate-400' alt="" />
               ))}
@@ -70,7 +86,7 @@ const ProductDetails = () => {
           </div>
         </div>
         <div className="flex gap-3 w-full">
-          <button className='flex-1 flex gap-5 items-center font-[700] justify-center bg-yellow text-slate-800 py-4 px-5 cursor-pointer rounded-md'>
+          <button onClick={()=>{dispatch(addToCart({...product,quantity:1})); setProductAddedToCart(true) ; window.scrollTo(0,0)  }} className='flex-1 flex gap-5 items-center font-[700] justify-center bg-yellow text-slate-800 py-4 px-5 cursor-pointer rounded-md'>
           <IoBagOutline className='text-[20px]' />
             <span>Add to cart</span>
           </button>
@@ -81,7 +97,7 @@ const ProductDetails = () => {
         <p className='flex gap-2 items-center font-[400] text-slate-700'><CiDeliveryTruck className='text-[22px]' /> delivery on orders over 15.00 $</p>
         </div>
       </section>
-      <SimilarProducts similarProducts={similarProducts}/>
+      <SimilarProducts similarProducts={similarProducts?.filter((p)=>(p.title !== product?.title))}/>
       </>
     )
     }

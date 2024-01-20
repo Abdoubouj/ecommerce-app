@@ -13,6 +13,7 @@ const SearchProducts = () => {
   const products = useSelector(searchedProducts);
   const productsStatus = useSelector(searechedProductsStatus);
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(fetchSearchedProducts(query));
   }, [query]);
   console.log(productsStatus);

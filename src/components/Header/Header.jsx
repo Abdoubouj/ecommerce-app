@@ -15,16 +15,17 @@ const Header = () => {
   const categories_list = useSelector(categories);
   const status = useSelector(categories_status);
   const error = useSelector(categories_error);
+  const {cart} = useSelector((state)=>state.cart);
   const [inputValue, setInputValue] = useState("");
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
   return (
-    <header className="app-header border-b-2 border-light">
+    <header className="app-header border-b-2 border-light  px-6">
       <div className="header-top px-5 flex items-center justify-between">
-        <div className="logo">
+        <Link to="/" className="logo">
           <img src={logo} alt="#" width={100} />
-        </div>
+        </Link>
         <div className="search-box relative">
           <input
             type="text"
@@ -39,13 +40,13 @@ const Header = () => {
           </Link>
         </div>
         <div className="h-right flex items-center gap-8 text-black">
-          <div className="cart flex flex-col justify-center items-center relative">
+          <Link to="/cart" className="cart flex flex-col justify-center items-center relative">
             <BsBag className="text-[20px]" />
             <span className="text-[14px]">Cart</span>
             <span className="absolute -top-[4px] -right-[4px] text-[10px] bg-yellow inline-block w-4 h-4 rounded-full leading-4 text-center">
-              0
+              {cart?.length}
             </span>
-          </div>
+          </Link>
           <div className="wishlist flex flex-col justify-center items-center">
             <BsHeart className="text-[20px]" />
             <span className="text-[14px]">Wishlist</span>
