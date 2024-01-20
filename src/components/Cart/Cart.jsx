@@ -1,9 +1,11 @@
 import React from 'react'
-import {useSelector} from "react-redux"
+import {useSelector , useDispatch} from "react-redux"
 import emptyCart from "../../assets/emptyCart.svg"
 import { Link } from 'react-router-dom';
+import { incrementQuantity } from '../../features/cartSlice';
 const Cart = () => {
     const {cart} = useSelector((state)=>state.cart);
+    const dispatch = useDispatch();
     console.log(cart);
   return (
     <div className='flex p-5 items-center justify-center'>
@@ -27,7 +29,7 @@ const Cart = () => {
                             <div className="change-quantity w-[140px] h-[40px] rounded-lg border-[1px] border-slate-200 flex items-center justify-between">
                                 <button className='h-full text-slate-950 w-[40px] rounded-l-lg bg-slate-200'>-</button>
                                 <span className='text-[16px]'>{item?.quantity}</span>
-                                <button className='h-full text-slate-950 w-[40px] rounded-r-lg bg-slate-200'>+</button>
+                                <button onClick={()=>{dispatch(incrementQuantity(item?.id))}} className='h-full text-slate-950 w-[40px] rounded-r-lg bg-slate-200'>+</button>
                             </div>
                             </div>
                             <div className="total-item-price">
