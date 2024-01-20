@@ -19,10 +19,18 @@ const cartSlice = createSlice({
             }else{
                 state.cart.push(action.payload);
             }
+        },
+        incrementQuantity :(state,action)=>{
+           state.cart = state.cart.map((i)=>{
+            if(i.id === action.payload){
+                return {...i,quantity:i.quantity + 1}
+            }
+            return i;
+           })
         }
     }
 })
 
-export const {addToCart} = cartSlice.actions;
+export const {addToCart , incrementQuantity} = cartSlice.actions;
 
 export default cartSlice.reducer;
