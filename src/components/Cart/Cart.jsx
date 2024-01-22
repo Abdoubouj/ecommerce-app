@@ -2,7 +2,7 @@ import React from 'react'
 import {useSelector , useDispatch} from "react-redux"
 import emptyCart from "../../assets/emptyCart.svg"
 import { Link } from 'react-router-dom';
-import { incrementQuantity } from '../../features/cartSlice';
+import { incrementQuantity ,decrementQuantity } from '../../features/cartSlice';
 const Cart = () => {
     const {cart} = useSelector((state)=>state.cart);
     const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const Cart = () => {
                             <div className="flex w-1/2 text-[20px] font-[400] flex-col gap-1">
                                 <h1 className='title'>{item?.title}</h1>
                                 <div className="price">{item?.price} $</div>
-                            <div className="change-quantity w-[140px] h-[40px] rounded-lg border-[1px] border-slate-200 flex items-center justify-between">
+                            <div onClick={()=>{dispatch(decrementQuantity(item?.id))}} className="change-quantity w-[140px] h-[40px] rounded-lg border-[1px] border-slate-200 flex items-center justify-between">
                                 <button className='h-full text-slate-950 w-[40px] rounded-l-lg bg-slate-200'>-</button>
                                 <span className='text-[16px]'>{item?.quantity}</span>
                                 <button onClick={()=>{dispatch(incrementQuantity(item?.id))}} className='h-full text-slate-950 w-[40px] rounded-r-lg bg-slate-200'>+</button>
